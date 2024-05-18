@@ -1,14 +1,5 @@
 function getComputerChoice() {
-    let computerChoice = Math.floor(3 * Math.random());
-    return computerChoice;
-}
-
-function getHumanChoice() {
-    let humanChoice = prompt("Enter: ");
-    return humanChoice;
-}
-
-function convertChoice(choice) {
+    let choice = Math.floor(3 * Math.random());
     if (choice === 0) {
         return "ROCK";
     } else if (choice === 1) {
@@ -20,39 +11,52 @@ function convertChoice(choice) {
     }
 }
 
-let humanScore = 0;
-let computerScore = 0;
-let result = document.querySelector(".result");
-function playRound() {
-    let humanChoice = 0;
-    let computerChoice = 0;
-    humanChoice = getHumanChoice().toUpperCase();
-    computerChoice = convertChoice(getComputerChoice());
+let buttons = document.querySelectorAll("button");
+function setPlayerChoice(button) {
+    return button.className.toUpperCase();
+}
 
-    if (humanChoice == "ROCK") {
+let playerScore = 0;
+let computerScore = 0;
+
+let playerChoice;
+let result = document.querySelector(".result");
+
+buttons.forEach(button => button.addEventListener("click", (e) => {
+    playerChoice = setPlayerChoice(e.target);
+    playRound();
+}));
+
+function playRound() {
+    let computerChoice = getComputerChoice();
+
+    if (playerChoice == "ROCK") {
         if (computerChoice == "PAPER") {
             computerScore++;
-            result.innerText = "You lose! Paper beats Rock";
+            result.innerText = "You lose! Paper beats Rock"
         } else if (computerChoice == "SCISSORS") {
-            humanScore++;
+            playerScore++;
             result.innerText = "You win! Rock beats scissors";
+        } else {
+            result.innerText = "Tie!";
         }
-    } else if (humanChoice == "PAPER") {
+    } else if (playerChoice == "PAPER") {
         if (computerChoice == "ROCK") {
-            humanScore++;
+            playerScore++;
             result.innerText = "You win! Paper beats rock";
         } else if (computerChoice == "SCISSORS") {
             computerScore++;
             result.innerText = "You lose! Scissors beats paper";
+        } else {
+            result.innerText = "Tie!";
         }
-    } else if (humanChoice == "SCISSORS") {
+    } else if (playerChoice == "SCISSORS") {
         if (computerChoice == "ROCK") {
             computerScore++;
             result.innerText = "You lose! Rock beats scissors";
         } else if (computerChoice == "PAPER") {
-            humanScore++;
-            result.innerText = "You win! Scissors beats paper";
+            playerScore++;
+            result.innerText = "You win! Scissors beats paper"
         }
     }
 }
-
